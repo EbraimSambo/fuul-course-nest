@@ -10,6 +10,9 @@ import { ReadUsersController } from './controllers/read-users.controller';
 import { DeleteUsersService } from './services/delete-users.service';
 import { UpdateUsersService } from './services/update-users.service';
 import { UpdateUsersController } from './controllers/update-users.controller';
+import { UserRepository,IUserRepository } from './repositories/user.repository';
+import { VeryfieldUsersService } from './services/veryfield-users.service';
+import { DeleteUsersController } from './controllers/delete-users.controller';
 
 @Module({
   controllers: [
@@ -17,15 +20,23 @@ import { UpdateUsersController } from './controllers/update-users.controller';
     CreateUserController,
     CreateUserController,
     ReadUsersController,
-    UpdateUsersController
+    UpdateUsersController,
+    DeleteUsersController
   ],
   providers: [
     UserService,
     CreateUsersService,
     ReadUsersService,
     DeleteUsersService,
-    UpdateUsersService
+    UpdateUsersService,
+    UserRepository,
+    {
+      provide: 'IUserRepository',
+      useExisting: UserRepository
+    },
+    VeryfieldUsersService,
   ],
-  imports: [TypeOrmModule.forFeature([User])]
+  imports: [TypeOrmModule.forFeature([User])],
+
 })
 export class UserModule { }

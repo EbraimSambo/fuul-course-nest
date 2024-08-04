@@ -6,7 +6,6 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.userService.findOne(+id);

@@ -1,17 +1,15 @@
-import { Injectable } from '@nestjs/common';
-import { User } from '../entities/user.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Inject, Injectable } from '@nestjs/common';
+import { IUserRepository } from '../repositories/user.repository';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User)
-    private userRepo: Repository<User>,  
+    @Inject('IUserRepository')
+    private readonly userRepo: IUserRepository,
   ){}
 
   findOne(id: number) {
-    return `This action returns a #${id} user`;
+    return this.userRepo.findOne(id);
   }
 
 }

@@ -1,30 +1,27 @@
-import { ConflictException, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { User } from 'src/user/entities/user.entity';
-import { Repository } from 'typeorm';
+import { IUserRepository } from '../repositories/user.repository';
+import { VeryfieldUsersService } from './veryfield-users.service';
+import { Inject, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class CreateUsersService {
-    constructor(
-        @InjectRepository(User)
-        private userRepo: Repository<User>,  
-      ){}
-      async create(createUserDto: CreateUserDto) {
-    
-        const userExist = await this.userRepo.findOne({
-          where:{
-            email: createUserDto.email
-          }
-        })
+  constructor(
+    @Inject('IUserRepository')
+    private readonly userRepo: IUserRepository,
+    private veryUsersService: VeryfieldUsersService
+  ) { }
+  async create(createUserDto: CreateUserDto) {
 
-        if(userExist) throw new ConflictException("Usuario já cadastrado")
-        const user = new User()
-        user.email = createUserDto.email
-        user.firstName = createUserDto.firstName
-        user.lastName = createUserDto.lastName
-        user.password = createUserDto.password
-        await this.userRepo.save(user)
-        return user;
-      }
+    await this.veryUsersService.findEmail(createUserDto.email)
+
+    const user = new User()
+    user.email = createUserDto.email
+    user.firstName = createUserDto.firstName
+    user.lastName = createUserDto.lastName
+    user.password = createUserDto.password
+    await this.userRepo.create(user)
+    return user;
+  }
+
 }

@@ -1,16 +1,14 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { User } from '../entities/user.entity';
-import { Repository } from 'typeorm';
+import { Inject, Injectable } from '@nestjs/common';
+import { IUserRepository } from '../repositories/user.repository';
 
 @Injectable()
 export class DeleteUsersService {
-    constructor(
-        @InjectRepository(User)
-        private userRepo: Repository<User>,  
-      ){}
-    
-      remove(id: number) {
-        return `This action removes a #${id} user`;
-      }
+  constructor(
+    @Inject('IUserRepository')
+    private readonly userRepo: IUserRepository,
+  ) { }
+
+  remove(id: number) {
+    return this.userRepo.remove(id);
+  }
 }
