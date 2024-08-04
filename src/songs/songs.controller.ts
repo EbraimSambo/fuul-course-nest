@@ -1,6 +1,9 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Scope } from '@nestjs/common';
 
-@Controller('songs')
+@Controller({
+    path: 'songs',
+    scope: Scope.REQUEST
+})
 export class SongsController {
     // constructor() { }
 
