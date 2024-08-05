@@ -12,6 +12,7 @@ import { Playlist } from './playlists/entities/playlist.entity';
 import { Song } from './songs/entities/song.entity';
 import { Artist } from './artists/entities/artist.entity';
 import { DataSource } from 'typeorm';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -28,7 +29,8 @@ import { DataSource } from 'typeorm';
     SongsModule, 
     PlaylistsModule, 
     ArtistsModule,
-     UserModule],
+     UserModule,
+     AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })

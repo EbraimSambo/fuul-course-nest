@@ -26,8 +26,8 @@ export class VeryfieldUsersService {
 
     
   async pagination(options: IPaginationOptions){
-    const query = this.userRepo.createQueryBuilder('c')
-    query.orderBy('c.releaseDate','DESC')
+    const query = this.userRepo.createQueryBuilder('c');
+    query.orderBy('c.lastName', 'DESC');
     return paginate<User>(query,options)
 }
 
