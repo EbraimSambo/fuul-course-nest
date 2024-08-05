@@ -2,6 +2,7 @@ import { ConflictException, Injectable } from '@nestjs/common';
 import { User } from '../entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { IPaginationOptions, paginate } from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class VeryfieldUsersService {
@@ -22,5 +23,12 @@ export class VeryfieldUsersService {
 
         return userExist
     }
+
+    
+  async pagination(options: IPaginationOptions){
+    const query = this.userRepo.createQueryBuilder('c')
+    query.orderBy('c.releaseDate','DESC')
+    return paginate<User>(query,options)
+}
 
 }
