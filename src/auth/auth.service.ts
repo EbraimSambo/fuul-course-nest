@@ -5,6 +5,8 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { compare } from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
+import { ArtistsService } from 'src/artists/artists.service';
+import { PayloadType } from './auth.types';
 
 @Injectable()
 export class AuthService {
@@ -12,7 +14,8 @@ export class AuthService {
     constructor(
         @InjectRepository(User)
         private userRepo: Repository<User>,
-        private jwtService: JwtService
+        private jwtService: JwtService,
+        private artistService: ArtistsService
     ) { }
 
     async login(loginDto: LoginDto):Promise<{accessToken: string}> {
@@ -28,7 +31,11 @@ export class AuthService {
 
         if(!await compare(password, user.password)) throw new UnauthorizedException("Password error")
         
-        const payLoad = {email, sub: user.id}
+        const payLoad: PayloadType = {email, userId: user.id}
+        const artist = await this.artistService.findOne(user.id)
+        if(artist){
+            payLoad.artistId = artist.id
+        }
         return {
             accessToken: this.jwtService.sign(payLoad)
         }

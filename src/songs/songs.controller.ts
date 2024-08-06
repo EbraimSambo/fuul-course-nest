@@ -1,4 +1,6 @@
-import { Controller, Get, Scope } from '@nestjs/common';
+import { Controller, Get, Req, Scope, UseGuards } from '@nestjs/common';
+import { Request } from 'express';
+import { ArtistAuthGuard } from 'src/auth/guards/artist-jwt.guard';
 
 @Controller({
     path: 'songs',
@@ -7,8 +9,10 @@ import { Controller, Get, Scope } from '@nestjs/common';
 export class SongsController {
     // constructor() { }
 
+    @UseGuards(ArtistAuthGuard)
     @Get()
-    songs() { 
+    songs(@Req() request: Request) { 
+        console.log(request.user)
         return "sambo";
     }
 }
