@@ -2,10 +2,11 @@ import { Repository } from "typeorm";
 import { User } from "../entities/user.entity";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+import { CreateUserDto } from "../dto/create-user.dto";
 
 
 export interface IUserRepository {
-    create(values: User): Promise<User>
+    create(values: CreateUserDto): Promise<User>
     update(id: number, values: User): void
     findAll(): Promise<User[]>
     findOne(id: number): Promise<User>

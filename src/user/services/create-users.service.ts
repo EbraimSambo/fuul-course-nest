@@ -13,15 +13,9 @@ export class CreateUsersService {
     private veryUsersService: VeryfieldUsersService
   ) { }
   async create(createUserDto: CreateUserDto) {
-
     await this.veryUsersService.findEmail(createUserDto.email)
-
-    const user = new User()
-    user.email = createUserDto.email
-    user.firstName = createUserDto.firstName
-    user.lastName = createUserDto.lastName
-    user.password = await hash(createUserDto.password, 10)
-    await this.userRepo.create(user)
+    createUserDto.password = await hash(createUserDto.password, 10)
+    const user = await this.userRepo.create(createUserDto)
     return user;
   }
 
